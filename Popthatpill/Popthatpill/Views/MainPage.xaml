@@ -4,8 +4,67 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Popthatpill.Views.MainPage"
-             Title="MainPage">
-  <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-    <Label Text="{Binding Title}" />
-  </StackLayout>
+             BackgroundColor="#2196F3">
+  <ContentPage.Padding>
+    <OnPlatform x:TypeArguments ="Thickness"
+      iOS="0,20,0,0"
+      Android ="0,0,0,0"/>
+  </ContentPage.Padding>
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <Style  x:Key="btnStyle"  TargetType="Button" >
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+        <Setter Property="BackgroundColor" Value="Blue" />
+        <Setter Property="BorderColor" Value="Blue" />
+        <Setter Property="BorderRadius" Value="10" />
+        <Setter Property="BorderWidth" Value="5" />
+        <Setter Property="WidthRequest" Value="200" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="FontSize" Value ="16"/>
+      </Style>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+    <Grid>
+    <Grid.RowDefinitions>
+    <RowDefinition Height="50"></RowDefinition>
+    <RowDefinition Height="*"></RowDefinition>
+ 
+    </Grid.RowDefinitions>
+      
+    <Grid.ColumnDefinitions>
+    <ColumnDefinition Width="*"></ColumnDefinition>
+    <ColumnDefinition Width="*"></ColumnDefinition>
+    </Grid.ColumnDefinitions>
+      
+      
+    <Button Text="btn" Grid.Column ="0" Grid.Row="0"  Style="{StaticResource btnStyle}" />
+    <Label Text ="{Binding MainTitle}" Grid.Column="1" Grid.Row="0" FontSize="24"  HorizontalTextAlignment="End" TextColor="White"/>
+    
+    <ScrollView Grid.Row="1"  Grid.Column ="0" Grid.ColumnSpan="2"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+    <StackLayout Grid.Row="1"  Grid.Column ="0" Grid.ColumnSpan="2"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" BackgroundColor="#2196F3"> 
+    <Label Text="Morning Pills" FontSize="24"  HorizontalTextAlignment="Center" TextColor="White"/>
+    <Button Text ="Sunday" Style="{StaticResource btnStyle}" Command="{Binding SMNavigateCommand}"/>
+    <Button Text ="Monday" Style="{StaticResource btnStyle}" Command="{Binding MMNavigateCommand}"/>
+    <Button Text ="Tuesday" Style="{StaticResource btnStyle}" Command="{Binding TMNavigateCommand}"/>
+    <Button Text ="Wednesday" Style="{StaticResource btnStyle}" Command="{Binding WMNavigateCommand}"/>
+    <Button Text ="Thursday" Style="{StaticResource btnStyle}" Command="{Binding THMNavigateCommand}"/>
+    <Button Text ="Friday" Style="{StaticResource btnStyle}" Command="{Binding FMNavigateCommand}"/>
+    <Button Text ="Saturday" Style="{StaticResource btnStyle}" Command="{Binding STMNavigateCommand}"/>
+
+
+    <Label Text="Night Pills" FontSize="24" HorizontalTextAlignment="Center" TextColor="White"/>
+    <Button Text ="Sunday" Style="{StaticResource btnStyle}" Command="{Binding SNNavigateCommand}"/>
+    <Button Text ="Monday" Style="{StaticResource btnStyle}" Command="{Binding MNNavigateCommand}"/>
+    <Button Text ="Tuesday" Style="{StaticResource btnStyle}" Command="{Binding TNNavigateCommand}"/>
+    <Button Text ="Wednesday" Style="{StaticResource btnStyle}" Command="{Binding WNNavigateCommand}"/>
+    <Button Text ="Thursday" Style="{StaticResource btnStyle}" Command="{Binding THNNavigateCommand}"/>
+    <Button Text ="Friday" Style="{StaticResource btnStyle}" Command="{Binding FNNavigateCommand}"/>
+    <Button Text ="Saturday" Style="{StaticResource btnStyle}" Command="{Binding STNNavigateCommand}"/>
+
+    </StackLayout>
+    </ScrollView>
+    </Grid>
 </ContentPage>
