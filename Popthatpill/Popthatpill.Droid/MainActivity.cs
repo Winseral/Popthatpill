@@ -8,6 +8,7 @@ using Android.OS;
 using Prism.Unity;
 using Microsoft.Practices.Unity;
 using Plugin.Permissions;
+using Plugin.Media;
 
 namespace Popthatpill.Droid
 {
@@ -20,13 +21,15 @@ namespace Popthatpill.Droid
             PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        protected override void OnCreate(Bundle bundle)
+        protected override async void OnCreate(Bundle bundle)
         {
 
             TabLayoutResource = Resource.Layout.tabs;
             ToolbarResource = Resource.Layout.toolbar;
 
             base.OnCreate(bundle);
+
+            await CrossMedia.Current.Initialize();
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App(new AndroidInitializer()));

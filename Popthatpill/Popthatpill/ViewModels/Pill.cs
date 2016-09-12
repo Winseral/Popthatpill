@@ -100,5 +100,10 @@ namespace Popthatpill.ViewModel
             this.PropertyChanged?.Invoke(this,
               new PropertyChangedEventArgs(propertyName));
         }
+
+        public override string ToString()
+        {
+            return NewPillName + " " + NewPillImage + "  " + NewPillCount + "  " + NewTime +  "  ";
+        }
     }
 }

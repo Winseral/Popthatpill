@@ -1,6 +1,8 @@
 ﻿using Prism.Unity;
 using Popthatpill.Views;
+using Xamarin.Forms.Xaml;
 
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Popthatpill
 {
     public partial class App : PrismApplication

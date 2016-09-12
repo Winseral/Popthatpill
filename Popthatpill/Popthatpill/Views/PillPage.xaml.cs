@@ -8,5 +8,6 @@ namespace Popthatpill.Views
         {
             InitializeComponent();
         }
+
     }
 }

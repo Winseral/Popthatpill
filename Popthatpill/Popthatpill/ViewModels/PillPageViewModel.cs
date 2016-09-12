@@ -40,8 +40,8 @@ namespace Popthatpill.ViewModels
             set { SetProperty(ref _MainTitle, value); }
         }
 
-        private string _PillImage;
-        public string PillImage
+        private ImageSource _PillImage;
+        public ImageSource PillImage
         {
             get { return _PillImage; }
             set { SetProperty(ref _PillImage, value); }
@@ -75,9 +75,15 @@ namespace Popthatpill.ViewModels
         {
             get { return _isActive; }
             set { SetProperty(ref _isActive, value); }
+
         }
 
-
+        private List<Pill> _GetDayPills;
+        public List<Pill> GetDayPills
+        {
+            get { return _GetDayPills; }
+            set { SetProperty(ref _GetDayPills, value); }
+        }
 
         //Navigation Command
         public DelegateCommand NavigationCommand { get; private set; }
@@ -92,13 +98,16 @@ namespace Popthatpill.ViewModels
         public DelegateCommand AddPBSTestCommand { get; private set; }
 
         public HttpClient PBSClient { get; private set; }
+        public int ID { get; private set; }
 
-        //Start of Class
+
+
+        //Start of Main Class
         public PillPageViewModel(INavigationService navigationService, IPageDialogService dialogService)
         {
+            
             _dialogService = dialogService;
             _NavigationService = navigationService;
-            
 
             PillCount = 1;
 
@@ -107,9 +116,10 @@ namespace Popthatpill.ViewModels
             AddImageCommand = new DelegateCommand(AddImage, CanAddImage).ObservesProperty(()=> PillName);
             AddPBSTestCommand = new DelegateCommand(PBSTest);
 
+           
         }
 
-       
+      
         public async void PBSTest()
         {
             //Once Searchbutton pressed look but the PBS list of pills
@@ -120,19 +130,27 @@ namespace Popthatpill.ViewModels
         }
 
 
-        private async Task<List<Item>> PBSGetData()
+        public async Task<List<Item>> PBSGetData()
         {
             IEnumerable<Item> Items = Enumerable.Empty<Item>();
 
-            PBSClient = new HttpClient();
-            var response = await PBSClient.GetAsync("https://api.pbs.gov.au/0.3/search.json?term=" + PillName + "&effectivedate=2016-08-01&view=item&api_key=afb2cdb41210b24f70e9b8cbf63653e2");
+            if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
 
-            if (response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var PBSSearch = JsonConvert.DeserializeObject<List<Item>>(content);
 
-            // await _dialogService.DisplayAlertAsync("Test Result", "out put of pbsSearch Items item is " + Items, "End Search");
+                PBSClient = new HttpClient();
+                var response = await PBSClient.GetAsync("https://api.pbs.gov.au/0.3/search.json?term=" + PillName + "&effectivedate=2016-08-01&view=item&api_key=afb2cdb41210b24f70e9b8cbf63653e2");
+
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    var content = await response.Content.ReadAsStringAsync();
+                    var PBSSearch = JsonConvert.DeserializeObject<PBS>(content);
+
+                    await _dialogService.DisplayAlertAsync("Test Result", "out put of pbsSearch Items item is " + string.Join(", ", PBSSearch), "End Search");
+
+                }
 
             }
             else await _dialogService.DisplayAlertAsync("Server Error", "Unable to connect to server, please confirm WiFi or MobileData is available", "OK");
@@ -144,7 +162,7 @@ namespace Popthatpill.ViewModels
            foreach (string PBSitem in PBSCodestring)
            {
                NewPickerview.Items.Add(PBSitem);
-           } */
+           }*/
 
             return Items.ToList();
 
@@ -167,23 +185,24 @@ namespace Popthatpill.ViewModels
 
             }
 
-            var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+            var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
             {
                     SaveToAlbum = true,
                     Name =  PillName + ".jpg"
 
-                });
+            });
 
             if (file == null)
                 return;
 
             await _dialogService.DisplayAlertAsync("File Location", file.Path, "OK");
-            /*image.Source = ImageSource.FromStream(() =>
+           
+            PillImage = ImageSource.FromStream(() =>
             {
                 var stream = file.GetStream();
                 file.Dispose();
                 return stream;
-            });*/
+            });
 
         }
 
@@ -207,7 +226,7 @@ namespace Popthatpill.ViewModels
             PillImage = "";
             Time = Timezero;
 
-
+           
         }
 
         //set what the NavigationCommnad will do
@@ -243,10 +262,40 @@ namespace Popthatpill.ViewModels
             Pills.NewTime = Time;
 
             database.Insert(Pills);
+
+            ID = Pills.ID;
+
+            Xamarin.Forms.DependencyService.Get<ICalendar>().PoppillReminder(ID,PillName,MainTitle,PillCount,Time);
+
+            var listView = new ListView();
+
+            // get the Pills related to this Day
+            GetDayPills = database.Query<Pill>("SELECT * FROM Pills WHERE Day = 'Sunday Morning Pills'").ToList();
+
+
+            listView.ItemsSource = GetDayPills;
+
+            
         }
 
- 
+        
+        
+
     }
+
+
+       /*ublic IEnumerable<Pill> GetTitlePills()
+        {
+            lock (CollisionLock)
+            {
+                return database.Query<Pill>("SELECT * FROM Pills WHERE Day = " + MainTitle).AsEnumerable();
+
+            }
+
+
+        }
+
+    }*/
  
 }
 
