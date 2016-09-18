@@ -4,13 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace Popthatpill
 {
     public interface ICameraImages
     {
-        Stream GetWriteStream(string filename);
-        Stream GetReadStream(string filename);
-        bool FileExists(string filename);
+        void SavePictureToDisk(ImageSource imgSrc, string Id);
+
+        string GetPictureFromDisk(string id);
     }
 }

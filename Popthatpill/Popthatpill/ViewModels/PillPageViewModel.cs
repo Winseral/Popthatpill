@@ -205,7 +205,7 @@ namespace Popthatpill.ViewModels
             var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
             {
                 SaveToAlbum = true,
-                Name =  PillName + ".JPG",
+                Name =  PillName + ".jpg",
                 
 
             });
@@ -214,7 +214,7 @@ namespace Popthatpill.ViewModels
 
             await _dialogService.DisplayAlertAsync("File Location", file.Path, "OK");
             var newimage = file.GetStream();
-            newimage = Xamarin.Forms.DependencyService.Get<ICameraImages>().GetWriteStream(PillName + ".JPG");
+            //newimage = Xamarin.Forms.DependencyService.Get<ICameraImages>().GetWriteStream(PillName + ".JPG");
            
         }
 
@@ -257,7 +257,6 @@ namespace Popthatpill.ViewModels
         public void OnNavigatedTo(NavigationParameters parameters)
         {
 
-
             if (parameters.ContainsKey("Title"))
                 MainTitle = (string)parameters["Title"];
 
@@ -268,15 +267,12 @@ namespace Popthatpill.ViewModels
 
             var listView = new ListView();
             GetDayPills = database.Table<Pill>().Where(v => v.Day.StartsWith(MainTitle)).ToList();
-            var stream = Xamarin.Forms.DependencyService.Get<ICameraImages>().GetReadStream(GetDayPills.Where(s=> s.NewPillName.EndsWith(".JPG")).ToString());
-
+  
             foreach (var Pill in GetDayPills)
-                PillImage.Source = ImageSource.FromStream(() =>
-                {
-                    return stream;
-                });
-
+            {
+                PillImage.Source = Xamarin.Forms.DependencyService.Get<ICameraImages>().GetPictureFromDisk(GetDayPills.AsEnumerable().ToString());
                 listView.ItemsSource = GetDayPills;
+            }
         }
 
         //On add pill sets the database with the new pill information
@@ -300,11 +296,10 @@ namespace Popthatpill.ViewModels
 
             var listView = new ListView();
             GetDayPills = database.Table<Pill>().Where(v => v.Day.StartsWith(MainTitle)).ToList();
-            //var stream = Xamarin.Forms.DependencyService.Get<ICameraImages>().GetReadStream(GetDayPills.Where(s => s.NewPillName.EndsWith(".JPG")).ToString());
-
+            
             foreach (var Pill in GetDayPills)
             {
-          
+                PillImage.Source = Xamarin.Forms.DependencyService.Get<ICameraImages>().GetPictureFromDisk(GetDayPills.AsEnumerable().ToString());
                 listView.ItemsSource = GetDayPills;  
                
             }

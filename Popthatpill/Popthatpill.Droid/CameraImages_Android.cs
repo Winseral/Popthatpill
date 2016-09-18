@@ -2,35 +2,51 @@ using Popthatpill.Droid;
 using Xamarin.Forms;
 using System.IO;
 using System;
+using Xamarin.Forms.Platform.Android;
+using Foundation;
+using Android.Content;
 
 [assembly: Dependency(typeof(CameraImages_Android))]
 namespace Popthatpill.Droid
 {
     class CameraImages_Android : ICameraImages
     {
-        public bool FileExists(string filename)
+        public Context Context { get; private set; }
+
+        public async void SavePictureToDisk(ImageSource imgSrc, string Id)
         {
-            var filePath = GetFilePath(filename);
-            return File.Exists(filePath);
+           /* var _filename = Id;
+            if (_filename.ToLower().Contains(".jpg") || _filename.ToLower().Contains(".png"))
+            {
+
+                var renderer = new StreamImagesourceHandler();
+                var photo = await renderer.LoadImageAsync(imgSrc, this.Context);
+                var documentsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                string jpgFilename = Path.Combine(documentsDirectory, Id.ToString() + ".jpg");
+
+                NSData imgData = photo.AsJPEG();
+
+                NSError err = null;
+                if (imgData.Save(jpgFilename, false, out err))
+                {
+                    Console.WriteLine("saved as " + jpgFilename);
+                }
+                else
+                {
+                    Console.WriteLine("NOT saved as " + jpgFilename + " because" + err.LocalizedDescription);
+                }
+
+            }*/
+
+
         }
 
-        public Stream GetReadStream(string filename)
+        public string GetPictureFromDisk(string id)
         {
-            var filePath = GetFilePath(filename);
-            return File.OpenRead(filePath);
+            var documentsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            string jpgFilename = Path.Combine(documentsDirectory, id.ToString() + ".jpg");
+            return jpgFilename;
         }
 
-        public Stream GetWriteStream(string filename)
-        {
-            var filePath = GetFilePath(filename);
-            var stream = File.OpenWrite(filePath);
-            return stream;
-        }
-
-        public string GetFilePath(string filename)
-        {
-            var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            return Path.Combine(documentsPath, filename);
-        }
     }
 }

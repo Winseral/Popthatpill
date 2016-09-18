@@ -89,6 +89,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Calendar_iOS.cs" />
+    <Compile Include="CameraImages_iOS.cs" />
     <Compile Include="DatabaseConnection_iOS.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
