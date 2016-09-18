@@ -1,98 +1,74 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Java.Util;
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Popthatpill.Droid;
 using Android.Provider;
 using Xamarin.Forms;
-using Android.Support.V4.Content;
-using Android;
-using Android.Content.PM;
-using static Android.Provider.CalendarContract;
+using Android.OS;
 
 [assembly: Dependency(typeof(Calendar_Android))]
 namespace Popthatpill.Droid
 {
+    [Service(Name = "com.myapp.CalendarSyncAdapter", Exported = true, Process = ":cal")]
+    [IntentFilter(new[] { "android.content.SyncAdapter" })]
+    [MetaData("android.content.SyncAdapter", Resource = "@xml/syncadapter")]
+
     public class Calendar_Android : Java.Lang.Object, ICalendar
     {
-        
+        public Activity EventActivity { get; private set; }
+        public Bundle PillId { get; private set; }
 
         public void PoppillReminder(int _ID, string _name, string _day, int _count, TimeSpan _time)
         {
-     
-            long EventID = _ID;
+
+            //long eventID = _ID;
             TimeSpan Time = _time;
             string Day = _day;
             string Title = Day;
             int Count = _count;
             string PillName = _name;
 
+            this.EventActivity = new Activity();
+
             string day = GetDay(ref Day);
 
-
-            long msTime =  Time.Days * 24 * 60 * 60 * 1000 +
-                           Time.Hours * 60 * 60 * 1000 +
+            long msTime = Time.Hours * 60 * 60 * 1000 +
                            Time.Minutes * 60 * 1000 +
-                           Time.Seconds * 1000 +
-                           Time.Milliseconds;
+                           Time.Seconds * 1000;
 
-            var epoch = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+            
+
+            var epoch = (DateTime.Today - new DateTime(1970, 1, 1)).TotalMilliseconds;
+
+            var correctBrisbantime = (epoch + msTime) - (10*60*60*1000);
+
+            Console.WriteLine(correctBrisbantime);
 
 
-            // long startMillis = 0;
-            /*Locale Locale1 = Locale.English;
-            Calendar beginTime = Calendar.GetInstance(Locale1);
-            beginTime.Set(2016, 9, 9, 7, 30);
-            startMillis = beginTime.TimeInMillis;
-            ;
+            //Intent intent = new Intent(Intent.ActionInsert);
+            Intent intent = new Intent(Intent.ActionInsert, ContentUris.WithAppendedId(CalendarContract.Events.ContentUri, (long)PillId));
 
-            Intent intent = new Intent(Intent.ActionInsert);
-            intent.SetType("vnd.android.cursor.item/event");
-            intent.PutExtra("beginTime", startMillis);
-            intent.PutExtra("allDay", false);
-            intent.PutExtra("rrule", "BYDAY=" + day);
-            //intent.putExtra("endTime", cal.getTimeInMillis()+60*60*1000);
-            intent.PutExtra("title", "Take your " + Title);
-            intent.PutExtra("Desciption", "Take " + Count + "pill/s of the name " + PillName);
-            // intent.setType("vnd.android.cursor.item/reminder");
-            //StartActivity(intent); */
+            intent.SetData(CalendarContract.Events.ContentUri);
+            intent.PutExtra(CalendarContract.EventsColumns.CalendarId, 1);
+            intent.PutExtra(CalendarContract.EventsColumns.Exdate, correctBrisbantime);
+            intent.PutExtra(CalendarContract.EventsColumns.HasExtendedProperties, 1);
+            intent.PutExtra(CalendarContract.ExtraEventBeginTime, correctBrisbantime);
+            intent.PutExtra(CalendarContract.EventsColumns.EventTimezone, "UTC");
+            //intent.PutExtra(CalendarContract.Events.InterfaceConsts.Dtstart, correctBrisbantime);
+            intent.PutExtra(CalendarContract.EventsColumns.Rrule, "FREQ=WEEKLY;WKST=SU;BYDAY=" + day);
+            intent.PutExtra(CalendarContract.EventsColumns.HasAlarm, 1);
+            intent.PutExtra(CalendarContract.EventsColumns.Title, "Take your " + Title + "                            Take " + Count + "pill / s of the name " + PillName);
+            intent.PutExtra(CalendarContract.EventsColumns.Description, "Take " + Count + "pill/s of the name " + PillName);
 
-            //var calendarsUri = CalendarContract.Calendars.ContentUri;
+            // Add Alarm reminder
+            intent.PutExtra(CalendarContract.EventsColumns.Availability, (int)EventsAvailability.Busy);
+            intent.PutExtra(CalendarContract.RemindersColumns.EventId, PillId);
+            intent.PutExtra(CalendarContract.RemindersColumns.Minutes, 10);
 
-            var calID = CalendarColumns.IsPrimary + "=1";
 
-                ContentValues eventValues = new ContentValues();
-                eventValues.Put(Events.InterfaceConsts.CalendarId, calID);
-                eventValues.Put(Events.InterfaceConsts.Dtstart, epoch + msTime);
-                eventValues.Put(Events.InterfaceConsts.Duration, "dur-day");
-                eventValues.Put(Events.InterfaceConsts.Rrule, "FREQ=WEEKLY;WKST=SU;BYDAY=" + day);
-                eventValues.Put(Events.InterfaceConsts.Title, "Take your " + Title);
-                eventValues.Put(Events.InterfaceConsts.Description, "Time to take " + Count + " " + PillName + " pill/s");
-                eventValues.Put(Events.InterfaceConsts.EventTimezone, "UTC+10");
-                eventValues.Put(Events.InterfaceConsts.HasAlarm, "1");
-                //eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtend, GetDateTimeMS(date.Year, date.Month, date.Day, (hour + 1), minute));
+            Forms.Context.StartActivity(intent); 
+            
 
-               
-                var uri = Forms.Context.ContentResolver.Insert(CalendarContract.Events.ContentUri, eventValues);
-                Console.WriteLine("Uri for new event: {0}", uri);
-
-                //long eventID = long.Parse(uri.LastPathSegment);
-
-                ContentValues reminderValues = new ContentValues();
-                // reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.CalendarId, calID);
-                reminderValues.Put(Reminders.InterfaceConsts.EventId, EventID);
-                reminderValues.Put(Reminders.InterfaceConsts.Method, (int)RemindersMethod.Alert);
-                reminderValues.Put(Reminders.InterfaceConsts.Minutes, 1);
-
-                var reminderUri = Forms.Context.ContentResolver.Insert(CalendarContract.Reminders.ContentUri, reminderValues);
-                Console.WriteLine("Uri for new event: {0}", reminderUri);
         }
 
         private string GetDay(ref string day)

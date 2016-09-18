@@ -20,6 +20,9 @@ namespace Popthatpill
         {
             Container.RegisterTypeForNavigation<MainPage>();
             Container.RegisterTypeForNavigation<PillPage>();
+            Container.RegisterTypeForNavigation<About>();
+
+           
         }
     }
 }

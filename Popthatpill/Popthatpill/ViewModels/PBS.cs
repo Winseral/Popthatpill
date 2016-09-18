@@ -1,9 +1,11 @@
-﻿using Popthatpill.ViewModels;
+﻿using Newtonsoft.Json;
+using Popthatpill.ViewModels;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Popthatpill.ViewModels
 {
-    public class PBS
+    public class PBS 
     {
 
         public interface GenericDrug
@@ -15,33 +17,36 @@ namespace Popthatpill.ViewModels
         }
 
 
-        /*public class Brands
+        public class Brands
         {
             public object Brand { get; set; }
-        } */
+        } 
 
 
         public class Item : GenericDrug
         {
-            //string Code { get; set; }
+            string Code { get; set; }
+
             string GenericDrug.Name { get; set; }
             string GenericDrug.Code { get; set; }
+
+            [JsonProperty(PropertyName = "GenericDrug.LIName")]
             string GenericDrug.LIName { get; set; }
             //string Mp.ID { get; set; }
             //string Schedule.Name { get; set; }
             //string Schedule.Code { get; set; }
-           // Brands Brands { get; set; }
+            Brands Brands { get; set; }
             //BodySystems BodySystems { get; set; }
             //ListingRules Listing.Rules { get; set; }
            // object MarkupCode { get; set; }
             //ItemFormStrengths FormStrengths { get; set; }
             //ItemFormStrengthLIs FormStrengthLIs { get; set; }
             // string MannerOfAdministration { get; set; }
-            //int MaxQuantity { get; set; }
-            //int PackQuantity { get; set; }
-            //int NumberOfRepeats { get; set; }
+            int MaxQuantity { get; set; }
+            int PackQuantity { get; set; }
+            int NumberOfRepeats { get; set; }
             //bool PrescribeAndSupplyMaximumQuantityException { get; set; }
-            //int SafetyNetDays { get; set; }
+            int SafetyNetDays { get; set; }
             //ItemDispensingFeeTypeCodes DispensingFeeTypeCodes { get; set; }
             //NoteCodes Note.Codes { get; set; }
             //RestrictionCodes Restriction.Codes { get; set; }
@@ -65,5 +70,7 @@ namespace Popthatpill.ViewModels
         {
             public Items Items { get; set; }
         }
+
+   
     }
 }

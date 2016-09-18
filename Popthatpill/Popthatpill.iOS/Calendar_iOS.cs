@@ -15,8 +15,7 @@ namespace Popthatpill.iOS
 {
     public class Calendar_iOS : ICalendar
     {
-
-
+       
         public void PoppillReminder(int _ID, string _name, string _day, int _count, TimeSpan _time)
         {
             long EventID = _ID;
@@ -36,8 +35,6 @@ namespace Popthatpill.iOS
             NSDate newNSdatetime = ConvertDateTimeToNSDate(Datewithtime);
             NSDate nsEndDate = NSDate.DistantFuture;
 
-            
-            
 
             CalendarHelper.Current.EventStore.RequestAccess(EKEntityType.Event,
             (bool granted, NSError e) =>
@@ -45,8 +42,8 @@ namespace Popthatpill.iOS
                 if (granted)
                 {
                     EKEvent newEvent = EKEvent.FromStore(CalendarHelper.Current.EventStore);
-                    newEvent.AddRecurrenceRule(new EKRecurrenceRule(EKRecurrenceFrequency.Weekly, 1, EKRecurrenceEnd.FromEndDate(nsEndDate)));
                     newEvent.StartDate = newNSdatetime;
+                    newEvent.AddRecurrenceRule(new EKRecurrenceRule(EKRecurrenceFrequency.Weekly, 1, EKRecurrenceEnd.FromEndDate(nsEndDate)));
                     newEvent.Title = "Take your " + Title;
                     newEvent.Notes = "Time to take " + Count + " " + PillName + " pill/s";
                     newEvent.Calendar = CalendarHelper.Current.EventStore.DefaultCalendarForNewEvents;
@@ -57,29 +54,63 @@ namespace Popthatpill.iOS
                         CalendarHelper.Current.EventStore.SaveEvent(newEvent, EKSpan.ThisEvent, true, out a);
                         if (a != null)
                         {
-                            new UIAlertView("Issues saving Reminder", a.ToString(), null, "ok", null).Show();
+
+                            // Disable UIKit thread checks for a couple of methods
+                            var previous = UIApplication.CheckForIllegalCrossThreadCalls;
+                            UIApplication.CheckForIllegalCrossThreadCalls = false;
+
+                            var issueView = new UIAlertView("Issues saving Reminder", a.ToString(), null, "ok", null);
+                            issueView.Show();
+
+
+                            // Restore
+                            UIApplication.CheckForIllegalCrossThreadCalls = previous;
                             return;
                         }
                         else
-                        {   // Test: Show UUID 
-                            new UIAlertView(newEvent.UUID, "The event has been saved", null, "ok", null).Show();
+                        {
+                            // Disable UIKit thread checks for a couple of methods
+                            var previous = UIApplication.CheckForIllegalCrossThreadCalls;
+                            UIApplication.CheckForIllegalCrossThreadCalls = false;
+
+                            // Test: Show EventIdentifier 
+                            var SavedView = new UIAlertView(newEvent.EventIdentifier, "The event has been saved", null, "ok", null);
+                            SavedView.Show();
                             //ViewModel.DataManager.InsertCalID(e.PTPEvent.Id, e.PTPEvent.FilmId, newEvent.Eventidentifier);
                             // ViewModel.DataManager.InsertCalID(e.PTPEvent.Id, e.PTPEvent.FilmId, newEvent.UUID);
+
+                            // Restore
+                            UIApplication.CheckForIllegalCrossThreadCalls = previous;
 
                         }
 
                     }
                     catch
                     {
-                        new UIAlertView("Event", "Issues accessing the Calendar to save reminder", null, "ok", null).Show();
+                        // Disable UIKit thread checks for a couple of methods
+                        var previous = UIApplication.CheckForIllegalCrossThreadCalls;
+                        UIApplication.CheckForIllegalCrossThreadCalls = false;
+
+                        var ErrorView =  new UIAlertView("Event", "Issues accessing the Calendar to save reminder", null, "ok", null);
+                        ErrorView.Show();
+
+                        // Restore
+                        UIApplication.CheckForIllegalCrossThreadCalls = previous;
+
                     }
-
-
 
                 }
                 else
                 {
-                    new UIAlertView("Access Denied", "user Denied Access to Calendar Data", null, "ok", null).Show();
+                    // Disable UIKit thread checks for a couple of methods
+                    var previous = UIApplication.CheckForIllegalCrossThreadCalls;
+                    UIApplication.CheckForIllegalCrossThreadCalls = false;
+
+                    var accessDeniedView = new UIAlertView("Access Denied", "user Denied Access to Calendar Data", null, "ok", null);
+                    accessDeniedView.Show();
+
+                    // Restore
+                    UIApplication.CheckForIllegalCrossThreadCalls = previous;
                 }
 
             });
@@ -114,46 +145,254 @@ namespace Popthatpill.iOS
         {
             if (day == "Sunday Morning Pills" || day == "Sunday Night Pills")
             {
+                if (today.DayOfWeek == DayOfWeek.Monday)
+                {
+                    recurring = -1;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Tuesday)
+                {
+                    recurring = -2;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Wednesday)
+                {
+                    recurring = -3;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Thursday)
+                {
+                    recurring = -4;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Friday)
+                {
+                    recurring = -5;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    recurring = -6;
+                    return recurring;
+                }
                 recurring = 0;
                 return recurring;
             }
 
-
             if (day == "Monday Morning Pills" || day == "Monda Night Pills")
             {
-                recurring = 1;
+               
+                if (today.DayOfWeek == DayOfWeek.Tuesday)
+                {
+                    recurring = -1;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Wednesday)
+                {
+                    recurring = -2;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Thursday)
+                {
+                    recurring = -3;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Friday)
+                {
+                    recurring = -4;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    recurring = -5;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    recurring = 1;
+                    return recurring;
+                }
+                recurring = 0;
                 return recurring;
             }
-
 
             if (day == "Tuesday Morning Pills" || day == "Tuesday Night Pills")
             {
-                recurring = 2;
+
+                if (today.DayOfWeek == DayOfWeek.Wednesday)
+                {
+                    recurring = -1;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Thursday)
+                {
+                    recurring = -2;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Friday)
+                {
+                    recurring = -3;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    recurring = -4;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    recurring = 2;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Monday)
+                {
+                    recurring = 1;
+                    return recurring;
+                }
+                recurring = 0;
                 return recurring;
             }
 
-
             if (day == "Wednesday Morning Pills" || day == "Wednesday Night Pills")
             {
-                recurring = 3;
+                
+                if (today.DayOfWeek == DayOfWeek.Thursday)
+                {
+                    recurring = -1;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Friday)
+                {
+                    recurring = -2;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    recurring = -3;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    recurring = 3;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Monday)
+                {
+                    recurring = 2;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Tuesday)
+                {
+                    recurring = 1;
+                    return recurring;
+                }
+                recurring = 0;
                 return recurring;
             }
 
             if (day == "Thursday Morning Pills" || day == "Thursday Night Pills")
-            {
-                recurring = 4;
+            { 
+                if (today.DayOfWeek == DayOfWeek.Friday)
+                {
+                    recurring = -1;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    recurring = -2;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    recurring = 4;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Monday)
+                {
+                    recurring = 3;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Tuesday)
+                {
+                    recurring = 2;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Wednesday)
+                {
+                    recurring = 1;
+                    return recurring;
+                }
+                recurring = 0;
                 return recurring;
             }
-
             if (day == "Friday Morning Pills" || day == "Friday Night Pills")
-            {
-                recurring = 5;
+            { 
+                if (today.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    recurring = -1;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    recurring = 5;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Monday)
+                {
+                    recurring = 4;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Tuesday)
+                {
+                    recurring = 3;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Wednesday)
+                {
+                    recurring = 2;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Thursday)
+                {
+                    recurring = 1;
+                    return recurring;
+                }
+                recurring = 0;
                 return recurring;
             }
-
             if (day == "Saturday Morning Pills" || day == "Saturday Night Pills")
             {
-                recurring = 6;
+                if (today.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    recurring = 6;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Monday)
+                {
+                    recurring = 5;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Tuesday)
+                {
+                    recurring = 4;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Wednesday)
+                {
+                    recurring = 3;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Thursday)
+                {
+                    recurring = 2;
+                    return recurring;
+                }
+                if (today.DayOfWeek == DayOfWeek.Friday)
+                {
+                    recurring = 1;
+                    return recurring;
+                }
+                recurring = 0;
                 return recurring;
             }
             return recurring;

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="preferExternal">
 	<uses-sdk android:minSdkVersion="22" android:targetSdkVersion="22" />
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -33,4 +33,10 @@
 	<uses-permission android:name="android.permission.WRITE_CONTACTS" />
 	<uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
 	<application android:label="Popthatpill.Droid" android:theme="@style/MyTheme"></application>
+  <intent-filter>
+    <action android:name="android.provider.calendar.action.HANDLE_CUSTOM_EVENT" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <data android:mimeType="vnd.android.cursor.item/event" />
+  </intent-filter>
+  
 </manifest>

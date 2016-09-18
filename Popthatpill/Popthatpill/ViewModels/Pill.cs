@@ -81,8 +81,8 @@ namespace Popthatpill.ViewModel
                 OnPropertyChanged(nameof(NewPillCount));
             }
         }
-        private TimeSpan _NewTime;
-        public TimeSpan NewTime
+        private string _NewTime;
+        public string NewTime
         {
             get
             {
@@ -103,7 +103,7 @@ namespace Popthatpill.ViewModel
 
         public override string ToString()
         {
-            return NewPillName + " " + NewPillImage + "  " + NewPillCount + "  " + NewTime +  "  ";
+            return NewPillImage;
         }
     }
 }

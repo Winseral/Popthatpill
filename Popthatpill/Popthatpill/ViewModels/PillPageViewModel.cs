@@ -7,16 +7,15 @@ using System.Linq;
 using Plugin.Media;
 using Xamarin.Forms;
 using Plugin.Media.Abstractions;
-using SQLite;
 using SQLite.Net;
-using System.Collections.ObjectModel;
 using Popthatpill.ViewModel;
 using Prism.Services;
 using System.Net.Http;
 using Newtonsoft.Json;
 using static Popthatpill.ViewModels.PBS;
 using System.Threading.Tasks;
-using System.Collections;
+using System.Net;
+using System.Diagnostics;
 
 namespace Popthatpill.ViewModels
 {
@@ -40,8 +39,8 @@ namespace Popthatpill.ViewModels
             set { SetProperty(ref _MainTitle, value); }
         }
 
-        private ImageSource _PillImage;
-        public ImageSource PillImage
+        private Image _PillImage;
+        public Image PillImage
         {
             get { return _PillImage; }
             set { SetProperty(ref _PillImage, value); }
@@ -70,6 +69,13 @@ namespace Popthatpill.ViewModels
             set { SetProperty(ref _Time, value); }
         }
 
+        private DateTime _date;
+        public DateTime date
+        {
+            get { return _date; }
+            set { SetProperty(ref _date, value); }
+        }
+
         private bool _isActive = false;
         public bool isActive
         {
@@ -85,6 +91,13 @@ namespace Popthatpill.ViewModels
             set { SetProperty(ref _GetDayPills, value); }
         }
 
+        private List<string> _ListOfSearchPBSNames;
+        public List<string> ListOfSearchPBSNames
+        {
+            get { return _ListOfSearchPBSNames; }
+            set { SetProperty(ref _ListOfSearchPBSNames, value); }
+        }
+
         //Navigation Command
         public DelegateCommand NavigationCommand { get; private set; }
 
@@ -98,9 +111,8 @@ namespace Popthatpill.ViewModels
         public DelegateCommand AddPBSTestCommand { get; private set; }
 
         public HttpClient PBSClient { get; private set; }
+
         public int ID { get; private set; }
-
-
 
         //Start of Main Class
         public PillPageViewModel(INavigationService navigationService, IPageDialogService dialogService)
@@ -110,62 +122,68 @@ namespace Popthatpill.ViewModels
             _NavigationService = navigationService;
 
             PillCount = 1;
+  
 
             NavigationCommand = new DelegateCommand(Navigate);
             AddCommand = new DelegateCommand(AddPill, CanAddPill).ObservesProperty(()=> PillName).ObservesProperty(()=>Time);
             AddImageCommand = new DelegateCommand(AddImage, CanAddImage).ObservesProperty(()=> PillName);
             AddPBSTestCommand = new DelegateCommand(PBSTest);
 
-           
         }
 
       
         public async void PBSTest()
         {
             //Once Searchbutton pressed look but the PBS list of pills
+            
             isActive = true;
             await PBSGetData();
-            isActive = false;
+            isActive = false;  
 
         }
 
 
         public async Task<List<Item>> PBSGetData()
         {
+
             IEnumerable<Item> Items = Enumerable.Empty<Item>();
+            List<string> ListOfSearchPBSNames = new List<string>();
+
 
             if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
 
             {
+                string apikey = "afb2cdb41210b24f70e9b8cbf63653e2";
+                var Uri2 = string.Format(@"https://api.pbs.gov.au/0.3/search.json?term={0}&effectivedate=2016-08-01&view=item&api_key={1}", PillName, apikey);
 
                 PBSClient = new HttpClient();
-                var response = await PBSClient.GetAsync("https://api.pbs.gov.au/0.3/search.json?term=" + PillName + "&effectivedate=2016-08-01&view=item&api_key=afb2cdb41210b24f70e9b8cbf63653e2");
-
-
+                var response = await PBSClient.GetAsync(Uri2);
+                
                 if (response.IsSuccessStatusCode)
                 {
-
+                    
                     var content = await response.Content.ReadAsStringAsync();
-                    var PBSSearch = JsonConvert.DeserializeObject<PBS>(content);
+                    RootObject name = JsonConvert.DeserializeObject<RootObject>(content);
 
-                    await _dialogService.DisplayAlertAsync("Test Result", "out put of pbsSearch Items item is " + string.Join(", ", PBSSearch), "End Search");
-
+                    foreach (GenericDrug s in name.Items.Item)
+                    {
+                        if (s.LIName != null)
+                        {
+                            ListOfSearchPBSNames.Add(s.LIName);
+                        }
+                    }
+                 
                 }
+
+                //display the list of PBS distinct values and allows user to add this name to PillName
+                var action = await _dialogService.DisplayActionSheetAsync("Pharmaceutical Benefits Scheme Search Result/s", "Cancel", "", ListOfSearchPBSNames.Distinct().ToArray());
+
+                if (action != "Cancel")
+                PillName = action;
 
             }
             else await _dialogService.DisplayAlertAsync("Server Error", "Unable to connect to server, please confirm WiFi or MobileData is available", "OK");
-
-            /*string PBSCodestring = string.Join(",", Items);
-
-            Picker NewPickerview = new Picker();
-
-           foreach (string PBSitem in PBSCodestring)
-           {
-               NewPickerview.Items.Add(PBSitem);
-           }*/
-
             return Items.ToList();
-
         }
 
         private bool CanAddImage()
@@ -173,10 +191,9 @@ namespace Popthatpill.ViewModels
             return !string.IsNullOrEmpty(PillName);
         }
 
-        private async void AddImage()
+        public async void AddImage()
         {
-            
-            
+      
             await CrossMedia.Current.Initialize();
             if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
             {
@@ -187,23 +204,18 @@ namespace Popthatpill.ViewModels
 
             var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
             {
-                    SaveToAlbum = true,
-                    Name =  PillName + ".jpg"
+                SaveToAlbum = true,
+                Name =  PillName + ".JPG",
+                
 
             });
-
             if (file == null)
                 return;
 
             await _dialogService.DisplayAlertAsync("File Location", file.Path, "OK");
+            var newimage = file.GetStream();
+            newimage = Xamarin.Forms.DependencyService.Get<ICameraImages>().GetWriteStream(PillName + ".JPG");
            
-            PillImage = ImageSource.FromStream(() =>
-            {
-                var stream = file.GetStream();
-                file.Dispose();
-                return stream;
-            });
-
         }
 
         private bool CanAddPill()
@@ -223,79 +235,84 @@ namespace Popthatpill.ViewModels
             //re-Int the screen variables
             PillName = "";
             PillCount = 1;
-            PillImage = "";
+            PillImage = null;
             Time = Timezero;
 
            
         }
 
         //set what the NavigationCommnad will do
-        private void Navigate()
+        private async void Navigate()
         {
-            _NavigationService.GoBackAsync();
+           await _NavigationService.GoBackAsync();
         }
 
         //INavigationAware passing Parameters between pages
         public void OnNavigatedFrom(NavigationParameters parameters)
         {
-            throw new NotImplementedException();
+            return;
         }
+
 
         public void OnNavigatedTo(NavigationParameters parameters)
         {
+
+
             if (parameters.ContainsKey("Title"))
                 MainTitle = (string)parameters["Title"];
 
+            PillImage = new Image { Aspect = Aspect.AspectFit };
+
+            //connect to database and get list of Pills related to this Day
+            var database = Xamarin.Forms.DependencyService.Get<IDatabaseConnection>().DbConnection();
+
+            var listView = new ListView();
+            GetDayPills = database.Table<Pill>().Where(v => v.Day.StartsWith(MainTitle)).ToList();
+            var stream = Xamarin.Forms.DependencyService.Get<ICameraImages>().GetReadStream(GetDayPills.Where(s=> s.NewPillName.EndsWith(".JPG")).ToString());
+
+            foreach (var Pill in GetDayPills)
+                PillImage.Source = ImageSource.FromStream(() =>
+                {
+                    return stream;
+                });
+
+                listView.ItemsSource = GetDayPills;
         }
 
         //On add pill sets the database with the new pill information
         public void PillDataAccess()
         {
+            PillImage = new Image { Aspect = Aspect.AspectFit };
+  
             var database = Xamarin.Forms.DependencyService.Get<IDatabaseConnection>().DbConnection();
             database.CreateTable<Pill>();
          
             var Pills = new Pill();
             Pills.Day = MainTitle;
             Pills.NewPillName = PillName;
-            Pills.NewPillImage = PillName + ".jpg";
+            Pills.NewPillImage = PillName + ".JPG";
             Pills.NewPillCount = PillCount;
-            Pills.NewTime = Time;
+            date = DateTime.Today + Time;
+            Pills.NewTime = date.ToString("hh:mm tt");
 
             database.Insert(Pills);
-
-            ID = Pills.ID;
-
-            Xamarin.Forms.DependencyService.Get<ICalendar>().PoppillReminder(ID,PillName,MainTitle,PillCount,Time);
+            database.Commit();
 
             var listView = new ListView();
+            GetDayPills = database.Table<Pill>().Where(v => v.Day.StartsWith(MainTitle)).ToList();
+            //var stream = Xamarin.Forms.DependencyService.Get<ICameraImages>().GetReadStream(GetDayPills.Where(s => s.NewPillName.EndsWith(".JPG")).ToString());
 
-            // get the Pills related to this Day
-            GetDayPills = database.Query<Pill>("SELECT * FROM Pills WHERE Day = 'Sunday Morning Pills'").ToList();
-
-
-            listView.ItemsSource = GetDayPills;
-
-            
-        }
-
-        
-        
-
-    }
-
-
-       /*ublic IEnumerable<Pill> GetTitlePills()
-        {
-            lock (CollisionLock)
+            foreach (var Pill in GetDayPills)
             {
-                return database.Query<Pill>("SELECT * FROM Pills WHERE Day = " + MainTitle).AsEnumerable();
-
+          
+                listView.ItemsSource = GetDayPills;  
+               
             }
 
-
+            ID = Pills.ID;
+            Xamarin.Forms.DependencyService.Get<ICalendar>().PoppillReminder(ID,PillName,MainTitle,PillCount,Time);
         }
-
-    }*/
- 
+        
+    }
 }
 

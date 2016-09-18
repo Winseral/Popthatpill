@@ -1,9 +1,12 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Xamarin.Forms;
 
 namespace Popthatpill.ViewModels
 {
@@ -11,6 +14,7 @@ namespace Popthatpill.ViewModels
     {
 
         INavigationService _NavigationService;
+        private IPageDialogService _dialogService;
 
         private string _MainTitle = "Popthatpill    ";
         public string MainTitle
@@ -113,6 +117,7 @@ namespace Popthatpill.ViewModels
         }
 
         private string _stnTitle = "Saturday Night Pills";
+ 
         public string stnTitle
         {
             get { return _stnTitle; }
@@ -138,10 +143,16 @@ namespace Popthatpill.ViewModels
         public DelegateCommand STNNavigateCommand { get; private set; }
 
 
+        public DelegateCommand popmenuCommand { get; private set; }
+
+
+
+
         //Class starts here
-        public MainPageViewModel(INavigationService navigationService)
+        public MainPageViewModel(INavigationService navigationService, IPageDialogService dialogService)
         {
             _NavigationService = navigationService;
+            _dialogService = dialogService;
 
             //Morning Command Buttons
             SMNavigateCommand = new DelegateCommand(SUMNavigate);
@@ -161,7 +172,23 @@ namespace Popthatpill.ViewModels
             FNNavigateCommand = new DelegateCommand(FNNavigate);
             STNNavigateCommand = new DelegateCommand(STNNavigate);
 
+            //popmenu and actions
+            popmenuCommand = new DelegateCommand(popmenu);
+
         }
+
+        private async void popmenu()
+        {
+            //actionsheet to different information
+            var action = await _dialogService.DisplayActionSheetAsync("   Menu   ", "Cancel", "", "PBS Website", "Prism Site", "About");
+
+
+            if (action == "About")
+            {
+                await _NavigationService.NavigateAsync("About");
+            }
+        }
+
 
         private void STNNavigate()
         {
@@ -261,6 +288,7 @@ namespace Popthatpill.ViewModels
             p.Add("Title", sumTitle);
             _NavigationService.NavigateAsync("PillPage", p);
         }
+
         #endregion
     }
 }

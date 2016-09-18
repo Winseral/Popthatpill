@@ -6,29 +6,52 @@
              x:Class="Popthatpill.Views.PillPage">
   
   <ContentPage.Padding>
-    <OnPlatform x:TypeArguments ="Thickness"
-      iOS="0,20,0,0"
-      Android ="0,0,0,0"/>
+        <OnPlatform x:TypeArguments ="Thickness" iOS="0,20,0,0" Android ="0,0,0,0"/>
   </ContentPage.Padding>
-  
-  <ContentPage.Resources>
+ 
+    <ContentPage.Resources>
     <ResourceDictionary>
-      <Style  x:Key="btnPillImage"  TargetType="Button">
-        <Setter Property="HorizontalOptions" Value="Center" />
-        <Setter Property="VerticalOptions" Value="CenterAndExpand" />
-        <Setter Property="BackgroundColor" Value="#0000cc" />
-        <Setter Property="BorderColor" Value="Blue" />
-        <Setter Property="BorderRadius" Value="5" />
-        <Setter Property="BorderWidth" Value="5" />
-        <Setter Property="WidthRequest" Value="200" />
-        <Setter Property="TextColor" Value="White" />
-        <Setter Property="FontSize" Value="8"/>
-      </Style>
-    </ResourceDictionary>
+            <Style  x:Key="btnPillImage"  TargetType="Button">
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+                <Setter Property="BackgroundColor" Value="#0000cc" />
+                <Setter Property="BorderColor" Value="Blue" />
+                <Setter Property="BorderRadius" Value="5" />
+                <Setter Property="BorderWidth" Value="5" />
+                <Setter Property="WidthRequest" Value="200" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value="8"/>
+            </Style>
+            <OnPlatform x:Key="textColor"
+            x:TypeArguments="Color"
+            iOS = "#0000cc"
+            Android = "White" />
+        </ResourceDictionary>
   </ContentPage.Resources>
-  <ScrollView>
+  
+<ScrollView>
   <StackLayout BackgroundColor="#2196F3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-    <Label Text="{Binding MainTitle}" FontSize="24"  HorizontalTextAlignment="Center" TextColor="White" />
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    
+
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="8*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
+                    <ColumnDefinition Width="45*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+
+                <Button Image="ic_arrow_back_white_36dp" Command="{Binding NavigationCommand}" Grid.Column ="0" Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="#2196F3" HorizontalOptions="FillAndExpand"/>
+                <Label Text ="{Binding MainTitle}" Grid.Column="3" Grid.Row="1" FontSize="Large"  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="White" BackgroundColor="#2196F3"/>
+            </Grid>
+
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="15"></RowDefinition>
@@ -43,7 +66,10 @@
         <ColumnDefinition Width="*"></ColumnDefinition>
       </Grid.ColumnDefinitions>
 
-      <SearchBar Text = "{Binding PillName, Mode=TwoWay}" SearchCommand = "{Binding AddPBSTestCommand}" Placeholder="Pill Name" PlaceholderColor="White" TextColor="White" Grid.Column = "0" Grid.Row = "1" Grid.ColumnSpan = "2"/>
+      <SearchBar Text = "{Binding PillName, Mode=TwoWay}" SearchCommand = "{Binding AddPBSTestCommand}" 
+      Placeholder="Pill Name" PlaceholderColor="#0000cc" 
+      BackgroundColor="#2196F3" TextColor="{StaticResource textColor}"
+      Grid.Column = "0" Grid.Row = "1" Grid.ColumnSpan = "2"/>
       <Button Image = "" Style="{StaticResource btnPillImage}" Text ="image" Command ="{Binding AddImageCommand}" Grid.Column = "0" Grid.Row = "2"/>
       <Button Image = "" Text = "Barcode" Style="{StaticResource btnPillImage}" Grid.Column = "1" Grid.Row = "2"/>
 
@@ -55,7 +81,7 @@
         <RowDefinition Height="30"></RowDefinition>
         <RowDefinition Height="45"></RowDefinition>
         <RowDefinition Height="45"></RowDefinition>
-        <RowDefinition Height="45"></RowDefinition>
+        <RowDefinition Height="20"></RowDefinition>
 
       </Grid.RowDefinitions>
 
@@ -71,24 +97,41 @@
       <Label Text ="{Binding PillCount}" FontSize ="16" TextColor="White" Grid.Column = "1" Grid.Row = "1" />
 
       <Label Text ="Reminder Time" FontSize ="16" TextColor="White" Grid.Column = "2" Grid.Row = "1" Grid.ColumnSpan = "2" />
-      <TimePicker Time ="{Binding Time}" TextColor="White" Grid.Column = "2" Grid.Row = "2" Grid.ColumnSpan = "2"/>
+      <TimePicker Time ="{Binding Time}" TextColor="{StaticResource textColor}" Grid.Column = "2" Grid.Row = "2" Grid.ColumnSpan = "2"/>
    
       <Button Image ="" Text="Add" Style="{StaticResource btnPillImage}" Command ="{Binding AddCommand}" Grid.Column = "1" Grid.Row = "3" Grid.ColumnSpan = "2" />
 
       <ActivityIndicator Color="Navy" IsRunning="{Binding isActive}"  Grid.Column = "1" Grid.Row = "4" Grid.ColumnSpan = "2"/>
-    </Grid>
+     </Grid>
 
-     <TableView Intent="Settings" >
-                <TableRoot  >
-                    <TableSection Title="Pill List">
-                        <ViewCell >
-                            <ListView ItemsSource="{Binding GetDayPills}" />
+            <ListView ItemsSource="{Binding GetDayPills}" HasUnevenRows="True" RowHeight="50">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid VerticalOptions="Fill" BackgroundColor="#2196F3">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="{Binding PillImage}" HeightRequest="50" WidthRequest="30" Grid.Column="0"/>
+                                <Label Text = "{Binding NewPillName}" FontSize="12"  Grid.Column="1" TextColor="White" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                <Label Text = "{Binding NewPillCount}" FontSize="12" Grid.Column="2" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                                <Label Text = "{Binding NewTime}" FontSize="12" Grid.Column="3" TextColor="White" VerticalTextAlignment="Center"/>
+                                <Button  Text="Delete" Style="{StaticResource btnPillImage}" Grid.Column = "4" />
+
+                            </Grid>
                         </ViewCell>
-
-                    </TableSection>
-                </TableRoot>
-       </TableView>
-
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
 </ScrollView>
  

@@ -214,6 +214,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calendar_Android.cs" />
+    <Compile Include="CameraImages_Android.cs" />
     <Compile Include="DatabaseConnection_Android.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
@@ -241,6 +242,26 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_white_48dp.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_white_18dp.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_white_24dp.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_white_36dp.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_white_18dp.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_white_24dp.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_white_36dp.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_white_48dp.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_white_18dp.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_white_24dp.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_white_36dp.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_white_48dp.png" />
+    <AndroidResource Include="Resources\drawable\ic_menu_white_18dp.png" />
+    <AndroidResource Include="Resources\drawable\ic_menu_white_24dp.png" />
+    <AndroidResource Include="Resources\drawable\ic_menu_white_36dp.png" />
+    <AndroidResource Include="Resources\drawable\ic_menu_white_48dp.png" />
+    <AndroidResource Include="Resources\drawable\ic_arrow_back_white_36dp.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_arrow_back_white_36dp.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_arrow_back_white_36dp.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_arrow_back_white_36dp.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Popthatpill\Popthatpill.csproj">

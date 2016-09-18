@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Popthatpill.Views.About"
+             BackgroundColor="#2196F3">
+
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments ="Thickness"
+      iOS="0,20,0,0"
+      Android ="0,0,0,0"/>
+    </ContentPage.Padding>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style  x:Key="btnStyle"  TargetType="Button" >
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+                <Setter Property="BackgroundColor" Value="Blue" />
+                <Setter Property="BorderColor" Value="Blue" />
+                <Setter Property="BorderRadius" Value="10" />
+                <Setter Property="BorderWidth" Value="5" />
+                <Setter Property="WidthRequest" Value="200" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value ="16"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+            <ColumnDefinition Width="45*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+
+        <Button Image="ic_arrow_back_white_36dp" Command="{Binding returnCommand}" Grid.Column ="0" Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="#2196F3" HorizontalOptions="FillAndExpand"/>
+        <Label Text ="PopthatPill" Grid.Column="3" Grid.Row="1" FontSize="24"  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="White" BackgroundColor="#2196F3"/>
+        <ScrollView Grid.Row="2"  Grid.Column ="0" Grid.ColumnSpan="4"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <StackLayout Grid.Row="2"  Grid.Column ="0" Grid.ColumnSpan="4"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" BackgroundColor="#2196F3">
+                <Label Text="Camera"/>
+                <Label Text="Add Pill reminder"/>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>
