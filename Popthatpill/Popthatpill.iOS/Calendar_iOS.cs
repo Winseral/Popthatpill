@@ -15,9 +15,7 @@ namespace Popthatpill.iOS
 {
     public class Calendar_iOS : ICalendar
     {
-        //private string NSRemindersUsageDescription;
-        //private string NSCalendarsUsageDescription;
-
+       
         public void PoppillReminder(int _ID, string _name, string _day, int _count, TimeSpan _time)
         {
             long EventID = _ID;
@@ -34,11 +32,6 @@ namespace Popthatpill.iOS
             Nowdtime = Nowdtime.AddDays(day);
             var Datewithtime = Nowdtime.Add(Time);
 
-            
-
-
-            //NSRemindersUsageDescription = "Popthatpill";
-            //NSCalendarsUsageDescription = "Popthatpill";
 
             NSDate newNSdatetime = ConvertDateTimeToNSDate(Datewithtime);
             NSDate nsEndDate = NSDate.DistantFuture;
