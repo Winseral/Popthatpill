@@ -53,15 +53,23 @@
     <Compile Include="SecureKey.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\PBS.cs" />
+    <Compile Include="ViewModels\PBSWebsiteViewModel.cs" />
     <Compile Include="ViewModels\Pill.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\PillPageViewModel.cs" />
+    <Compile Include="ViewModels\PrismSiteViewModel.cs" />
     <Compile Include="Views\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PBSWebsite.xaml.cs">
+      <DependentUpon>PBSWebsite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PillPage.xaml.cs">
       <DependentUpon>PillPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrismSite.xaml.cs">
+      <DependentUpon>PrismSite.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +186,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\About.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PBSWebsite.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PrismSite.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

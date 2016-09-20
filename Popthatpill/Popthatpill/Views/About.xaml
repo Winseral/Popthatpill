@@ -48,10 +48,79 @@
         <Label Text ="PopthatPill" Grid.Column="3" Grid.Row="1" FontSize="24"  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="White" BackgroundColor="#2196F3"/>
         <ScrollView Grid.Row="2"  Grid.Column ="0" Grid.ColumnSpan="4"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
             <StackLayout Grid.Row="2"  Grid.Column ="0" Grid.ColumnSpan="4"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" BackgroundColor="#2196F3">
-                <Label Text="Camera"/>
-                <Label Text="Add Pill reminder"/>
+                <Label Text=""  FontSize="Medium"/>
+                <Label TextColor="White" FontSize="Medium">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Main Menu" FontAttributes="Bold" FontSize="Large"/>
+                            <Span Text=" - Click the morning or Night by Day to add pill reminder"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Text=""  FontSize="Medium"/>
+                <Label TextColor="White" FontSize="Medium">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Pill Name" FontAttributes="Bold" FontSize="Large"/>
+                            <Span Text=" - Enter the Name of Pill to take"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Text=""  FontSize="Medium"/>
+                <Label TextColor="White" FontSize="Medium">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Search Icon" FontAttributes="Bold" FontSize="Large"/>
+                            <Span Text=" - Search the Australian Pharmaceutical Benefits Scheme (PBS) for listed drugs"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Text=""  FontSize="Medium"/>
+                <Label TextColor="White" FontSize="Medium">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Barcode Button" FontAttributes="Bold" FontSize="Large"/>
+                            <Span Text=" - Search the Australian Pharmaceutical Benefits Scheme (PBS) for listed drugs by barcode (not implemented)"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Text=""  FontSize="Medium"/>
+                <Label TextColor="White" FontSize="Medium">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Pill Counter" FontAttributes="Bold" FontSize="Large"/>
+                            <Span Text=" - Enter the number of pills to take for this day"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Text=""  FontSize="Medium"/>
+                <Label TextColor="White" FontSize="Medium">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Timer" FontAttributes="Bold" FontSize="Large"/>
+                            <Span Text=" - Set the time of day to be reminded to take this pill"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Text=""  FontSize="Medium"/>
+                <Label TextColor="White" FontSize="Medium">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Add Button" FontAttributes="Bold" FontSize="Large"/>
+                            <Span Text=" - Send this data to your calendar as a reminder"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Text=""  FontSize="Medium"/>
+                <Label TextColor="White" FontSize="Medium">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Delete Button" FontAttributes="Bold" FontSize="Large"/>
+                            <Span Text=" - Delete this pill reminder (not implemented)"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
             </StackLayout>
         </ScrollView>
     </Grid>
-
 </ContentPage>

@@ -187,6 +187,17 @@ namespace Popthatpill.ViewModels
             {
                 await _NavigationService.NavigateAsync("About");
             }
+
+            if (action == "PBS Website")
+            {
+                await _NavigationService.NavigateAsync("PBSWebsite");
+            }
+
+            if (action == "Prism Site")
+            {
+                await _NavigationService.NavigateAsync("PrismSite");
+            }
+
         }
 
 

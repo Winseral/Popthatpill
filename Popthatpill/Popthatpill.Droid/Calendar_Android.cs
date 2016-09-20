@@ -15,6 +15,7 @@ namespace Popthatpill.Droid
 
     public class Calendar_Android : Java.Lang.Object, ICalendar
     {
+      
         public Activity EventActivity { get; private set; }
         public Bundle PillId { get; private set; }
 
@@ -45,20 +46,22 @@ namespace Popthatpill.Droid
             Console.WriteLine(correctBrisbantime);
 
 
+
             //Intent intent = new Intent(Intent.ActionInsert);
             Intent intent = new Intent(Intent.ActionInsert, ContentUris.WithAppendedId(CalendarContract.Events.ContentUri, (long)PillId));
 
             intent.SetData(CalendarContract.Events.ContentUri);
             intent.PutExtra(CalendarContract.EventsColumns.CalendarId, 1);
+            intent.PutExtra(CalendarContract.SyncColumns.AccountType, "LOCAL"); 
             intent.PutExtra(CalendarContract.EventsColumns.Exdate, correctBrisbantime);
             intent.PutExtra(CalendarContract.EventsColumns.HasExtendedProperties, 1);
-            intent.PutExtra(CalendarContract.ExtraEventBeginTime, correctBrisbantime);
+            //intent.PutExtra(CalendarContract.ExtraEventBeginTime, correctBrisbantime);
             intent.PutExtra(CalendarContract.EventsColumns.EventTimezone, "UTC");
             //intent.PutExtra(CalendarContract.Events.InterfaceConsts.Dtstart, correctBrisbantime);
             intent.PutExtra(CalendarContract.EventsColumns.Rrule, "FREQ=WEEKLY;WKST=SU;BYDAY=" + day);
             intent.PutExtra(CalendarContract.EventsColumns.HasAlarm, 1);
-            intent.PutExtra(CalendarContract.EventsColumns.Title, "Take your " + Title + "                            Take " + Count + "pill / s of the name " + PillName);
-            intent.PutExtra(CalendarContract.EventsColumns.Description, "Take " + Count + "pill/s of the name " + PillName);
+            intent.PutExtra(CalendarContract.EventsColumns.Title, "Take your " + Title + "                            Take " + Count + " pill/s of the name " + PillName);
+            intent.PutExtra(CalendarContract.EventsColumns.Description, "Take " + Count + " pill/s of the name " + PillName);
 
             // Add Alarm reminder
             intent.PutExtra(CalendarContract.EventsColumns.Availability, (int)EventsAvailability.Busy);

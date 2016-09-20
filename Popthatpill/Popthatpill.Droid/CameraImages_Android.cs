@@ -3,8 +3,10 @@ using Xamarin.Forms;
 using System.IO;
 using System;
 using Xamarin.Forms.Platform.Android;
-using Foundation;
 using Android.Content;
+using Android.Graphics;
+using Android.Widget;
+using Android.App;
 
 [assembly: Dependency(typeof(CameraImages_Android))]
 namespace Popthatpill.Droid
@@ -12,39 +14,37 @@ namespace Popthatpill.Droid
     class CameraImages_Android : ICameraImages
     {
         public Context Context { get; private set; }
+       
 
         public async void SavePictureToDisk(ImageSource imgSrc, string Id)
         {
-           /* var _filename = Id;
-            if (_filename.ToLower().Contains(".jpg") || _filename.ToLower().Contains(".png"))
+            var _filename = Id;
+            if (_filename.ToLower().Contains(".jpg"))
             {
 
                 var renderer = new StreamImagesourceHandler();
-                var photo = await renderer.LoadImageAsync(imgSrc, this.Context);
+                var photo = await renderer.LoadImageAsync(imgSrc, Context);
                 var documentsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-                string jpgFilename = Path.Combine(documentsDirectory, Id.ToString() + ".jpg");
+                string jpgFilename = System.IO.Path.Combine(documentsDirectory, Id.ToString() + ".jpg");
 
-                NSData imgData = photo.AsJPEG();
-
-                NSError err = null;
-                if (imgData.Save(jpgFilename, false, out err))
+                try
                 {
-                    Console.WriteLine("saved as " + jpgFilename);
+                    using (var os = new FileStream(jpgFilename, FileMode.Create))
+                    {
+                        photo.Compress(Bitmap.CompressFormat.Jpeg, 100, os);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine("NOT saved as " + jpgFilename + " because" + err.LocalizedDescription);
+                    Toast.MakeText(Context, "Error in save file Error Message - " + ex, ToastLength.Short).Show();
                 }
-
-            }*/
-
-
+            }
         }
 
         public string GetPictureFromDisk(string id)
         {
             var documentsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            string jpgFilename = Path.Combine(documentsDirectory, id.ToString() + ".jpg");
+            string jpgFilename = System.IO.Path.Combine(documentsDirectory, id.ToString() + ".jpg");
             return jpgFilename;
         }
 

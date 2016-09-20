@@ -16,6 +16,7 @@ using static Popthatpill.ViewModels.PBS;
 using System.Threading.Tasks;
 using System.Net;
 using System.Diagnostics;
+using System.IO;
 
 namespace Popthatpill.ViewModels
 {
@@ -110,10 +111,14 @@ namespace Popthatpill.ViewModels
         //Add SearchBar Pill test
         public DelegateCommand AddPBSTestCommand { get; private set; }
 
+        //Delete button and BarCode
+        public DelegateCommand NotImplementedCommand { get; private set; }
+
         public HttpClient PBSClient { get; private set; }
 
         public int ID { get; private set; }
 
+    
         //Start of Main Class
         public PillPageViewModel(INavigationService navigationService, IPageDialogService dialogService)
         {
@@ -128,10 +133,15 @@ namespace Popthatpill.ViewModels
             AddCommand = new DelegateCommand(AddPill, CanAddPill).ObservesProperty(()=> PillName).ObservesProperty(()=>Time);
             AddImageCommand = new DelegateCommand(AddImage, CanAddImage).ObservesProperty(()=> PillName);
             AddPBSTestCommand = new DelegateCommand(PBSTest);
+            NotImplementedCommand = new DelegateCommand(NotImplemented);
 
         }
 
-      
+        private async void NotImplemented()
+        {
+            await _dialogService.DisplayAlertAsync("Comming Soon","Feature not implemented", "OK");
+        }
+
         public async void PBSTest()
         {
             //Once Searchbutton pressed look but the PBS list of pills
@@ -213,8 +223,8 @@ namespace Popthatpill.ViewModels
                 return;
 
             await _dialogService.DisplayAlertAsync("File Location", file.Path, "OK");
-            var newimage = file.GetStream();
-            //newimage = Xamarin.Forms.DependencyService.Get<ICameraImages>().GetWriteStream(PillName + ".JPG");
+            PillImage.Source = ImageSource.FromStream(file.GetStream);
+            Xamarin.Forms.DependencyService.Get<ICameraImages>().SavePictureToDisk(PillImage.Source, PillName + ".jpg");
            
         }
 

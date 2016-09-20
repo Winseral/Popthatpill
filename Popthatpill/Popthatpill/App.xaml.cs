@@ -21,6 +21,8 @@ namespace Popthatpill
             Container.RegisterTypeForNavigation<MainPage>();
             Container.RegisterTypeForNavigation<PillPage>();
             Container.RegisterTypeForNavigation<About>();
+            Container.RegisterTypeForNavigation<PBSWebsite>();
+            Container.RegisterTypeForNavigation<PrismSite>();
 
            
         }
