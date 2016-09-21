@@ -8,10 +8,11 @@
 -----------------
 
 ### Android Supported API 21 Lollipop to Android N API 24
+### iOS 10 Supported
 ### [Download the code from GitHub](https://github.com/Winseral/Popthatpill)
 
 -----------------
-#Plugins
+#Plugins - References
 
 ##PLC
 ![xamarin forms references](https://cloud.githubusercontent.com/assets/12288812/18732188/8cb845c2-80a4-11e6-88b5-1b3ee0b652f8.PNG)
@@ -19,7 +20,7 @@
 ##Android
 ![xamarin android references](https://cloud.githubusercontent.com/assets/12288812/18732195/a405434c-80a4-11e6-92df-0776f97a158a.PNG)
 
-#@iOS
+##iOS
 ![xamarin ios10 references](https://cloud.githubusercontent.com/assets/12288812/18732199/abed958c-80a4-11e6-9051-1f79953b4bc7.PNG)
 --------------
 
