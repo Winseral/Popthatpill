@@ -1,16 +1,18 @@
 # Popthatpill
 ================
-# [Xamarin.Android Application](https://github.com/xamarin/xamarin-android/blob/master/README.md)
+# [Xamarin Forms iOS & Androi](https://github.com/xamarin/Xamarin.Forms)
 
 # [Deakin](http://www.deakin.edu.au/) IT Degree SIT313 Tri2 2016 Mobile Computing 
 
-##Xamarin Forms - Android/iOS Pill Reminder syste
+##Xamarin Forms - Android/iOS Pill Reminder system
 -----------------
 
-### Android Supported API 19 KitCat to Android N API 24
+### Android Supported API 21 Lollipop to Android N API 24
 ### [Download the code from GitHub](https://github.com/Winseral/Popthatpill)
 
 -----------------
+#Plugins
+
 
 #Licenses
 ===============
