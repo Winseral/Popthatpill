@@ -42,7 +42,7 @@
     </Grid.ColumnDefinitions>
 
 
-     <Button Image="ic_menu_white_36dp" Command="{Binding popmenuCommand}" Grid.Column ="0" Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="#2196F3" HorizontalOptions="FillAndExpand"/>
+    <Button Image="ic_menu_white_36dp" Command="{Binding popmenuCommand}" Grid.Column ="0" Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="#2196F3" HorizontalOptions="FillAndExpand"/>
     <Label Text ="{Binding MainTitle}" Grid.Column="3" Grid.Row="1" FontSize="24"  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="White" BackgroundColor="#2196F3"/>
     
     <ScrollView Grid.Row="2"  Grid.Column ="0" Grid.ColumnSpan="4"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">

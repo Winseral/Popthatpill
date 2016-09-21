@@ -4,20 +4,25 @@ using System.Linq;
 using NUnit.Framework;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;
-using Xamarin.UITest.Android;
 
-namespace PopthatpillTest.Droid
+namespace PopthatpillTest.PLC
 {
-    [TestFixture]
+    [TestFixture(Platform.Android)]
+    [TestFixture(Platform.iOS)]
     public class Tests
     {
-        AndroidApp app;
+        IApp app;
+        Platform platform;
+
+        public Tests(Platform platform)
+        {
+            this.platform = platform;
+        }
 
         [SetUp]
         public void BeforeEachTest()
         {
-            app = ConfigureApp.Android.ApkFile("/Deakin/2016 Tri 2/SIT313/Assignment 2/Popthatpill/Popthatpill/Popthatpill.Droid/bin/Release/Popthatpill.Popthatpill.apk").StartApp();
-
+            app = AppInitializer.StartApp(platform);
         }
 
         [Test]
