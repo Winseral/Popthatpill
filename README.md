@@ -24,6 +24,12 @@
 ![xamarin ios10 references](https://cloud.githubusercontent.com/assets/12288812/18732199/abed958c-80a4-11e6-9051-1f79953b4bc7.PNG)
 --------------
 
+# Prism MVVM 6.2
+================
+##Special thanks goes to Brian Lagunas for developing [Prism MVVM Platform](http://brianlagunas.com/)
+
+----------------
+
 #Licenses
 ===============
 ##[Offical Google IconsMaterial](http://www.google.com/design/spec/style/icons.html#icons-system-icons)
