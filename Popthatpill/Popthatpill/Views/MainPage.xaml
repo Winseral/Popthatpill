@@ -42,29 +42,29 @@
     </Grid.ColumnDefinitions>
 
 
-    <Button Image="ic_menu_white_36dp" Command="{Binding popmenuCommand}" Grid.Column ="0" Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="#2196F3" HorizontalOptions="FillAndExpand"/>
-    <Label Text ="{Binding MainTitle}" Grid.Column="3" Grid.Row="1" FontSize="24"  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="White" BackgroundColor="#2196F3"/>
+    <Button Image="ic_menu_white_36dp" Command="{Binding popmenuCommand}" x:name ="menubutton" AutomationId="MenuButton" Grid.Column ="0" Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="#2196F3" HorizontalOptions="FillAndExpand"/>
+    <Label Text ="{Binding MainTitle}" x:name="title" AutomationId="Title" Grid.Column="3" Grid.Row="1" FontSize="24"  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="White" BackgroundColor="#2196F3"/>
     
     <ScrollView Grid.Row="2"  Grid.Column ="0" Grid.ColumnSpan="4"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
     <StackLayout Grid.Row="2"  Grid.Column ="0" Grid.ColumnSpan="4"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" BackgroundColor="#2196F3"> 
     <Label Text="Morning Pills" FontSize="20"  HorizontalTextAlignment="Center" TextColor="White"/>
-    <Button Text ="Sunday" Style="{StaticResource btnStyle}" Command="{Binding SMNavigateCommand}"/>
-    <Button Text ="Monday" Style="{StaticResource btnStyle}" Command="{Binding MMNavigateCommand}"/>
-    <Button Text ="Tuesday" Style="{StaticResource btnStyle}" Command="{Binding TMNavigateCommand}"/>
-    <Button Text ="Wednesday" Style="{StaticResource btnStyle}" Command="{Binding WMNavigateCommand}"/>
-    <Button Text ="Thursday" Style="{StaticResource btnStyle}" Command="{Binding THMNavigateCommand}"/>
-    <Button Text ="Friday" Style="{StaticResource btnStyle}" Command="{Binding FMNavigateCommand}"/>
-    <Button Text ="Saturday" Style="{StaticResource btnStyle}" Command="{Binding STMNavigateCommand}"/>
+    <Button Text ="Sunday" Style="{StaticResource btnStyle}" Command="{Binding SMNavigateCommand}" x:name="msunday"  AutomationId="MSunday"/>
+    <Button Text ="Monday" Style="{StaticResource btnStyle}" Command="{Binding MMNavigateCommand}" x:name ="mmonday" AutomationId="MMonday"/>
+    <Button Text ="Tuesday" Style="{StaticResource btnStyle}" Command="{Binding TMNavigateCommand}" x:name ="mtuesday" AutomationId="MTuesday"/>
+    <Button Text ="Wednesday" Style="{StaticResource btnStyle}" Command="{Binding WMNavigateCommand}" x:name ="mwednesday" AutomationId="MWednesday"/>
+    <Button Text ="Thursday" Style="{StaticResource btnStyle}" Command="{Binding THMNavigateCommand}" x:name ="mthursday" AutomationId="MThursday"/>
+    <Button Text ="Friday" Style="{StaticResource btnStyle}" Command="{Binding FMNavigateCommand}" x:name ="mfriday" AutomationId="MFriday"/>
+    <Button Text ="Saturday" Style="{StaticResource btnStyle}" Command="{Binding STMNavigateCommand}" x:name ="msaturday" AutomationId="MSaturday"/>
 
 
     <Label Text="Night Pills" FontSize="20" HorizontalTextAlignment="Center" TextColor="White"/>
-    <Button Text ="Sunday" Style="{StaticResource btnStyle}" Command="{Binding SNNavigateCommand}"/>
-    <Button Text ="Monday" Style="{StaticResource btnStyle}" Command="{Binding MNNavigateCommand}"/>
-    <Button Text ="Tuesday" Style="{StaticResource btnStyle}" Command="{Binding TNNavigateCommand}"/>
-    <Button Text ="Wednesday" Style="{StaticResource btnStyle}" Command="{Binding WNNavigateCommand}"/>
-    <Button Text ="Thursday" Style="{StaticResource btnStyle}" Command="{Binding THNNavigateCommand}"/>
-    <Button Text ="Friday" Style="{StaticResource btnStyle}" Command="{Binding FNNavigateCommand}"/>
-    <Button Text ="Saturday" Style="{StaticResource btnStyle}" Command="{Binding STNNavigateCommand}"/>
+    <Button Text ="Sunday" Style="{StaticResource btnStyle}" Command="{Binding SNNavigateCommand}" x:name="nsunday" AutomationId="NSunday"/>
+    <Button Text ="Monday" Style="{StaticResource btnStyle}" Command="{Binding MNNavigateCommand}" x:name="nmonday" AutomationId="NMonday"/>
+    <Button Text ="Tuesday" Style="{StaticResource btnStyle}" Command="{Binding TNNavigateCommand}" x:name="ntuesday" AutomationId="NTuesday"/>
+    <Button Text ="Wednesday" Style="{StaticResource btnStyle}" Command="{Binding WNNavigateCommand}" x:name="nwednesday" AutomationId="NWednesday"/>
+    <Button Text ="Thursday" Style="{StaticResource btnStyle}" Command="{Binding THNNavigateCommand}" x:name="nthursday" AutomationId="NThursday"/>
+    <Button Text ="Friday" Style="{StaticResource btnStyle}" Command="{Binding FNNavigateCommand}" x:name="nfriday" AutomationId="NFriday"/>
+    <Button Text ="Saturday" Style="{StaticResource btnStyle}" Command="{Binding STNNavigateCommand}" x:name ="nsaturday" AutomationId="NSaturday"/>
 
     </StackLayout>
     </ScrollView>

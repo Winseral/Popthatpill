@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Popthatpill")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Xamarin Forms Application - Pill Reminder")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Popthatpill")]
