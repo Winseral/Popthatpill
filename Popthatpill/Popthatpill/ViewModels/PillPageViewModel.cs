@@ -14,9 +14,6 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using static Popthatpill.ViewModels.PBS;
 using System.Threading.Tasks;
-using System.Net;
-using System.Diagnostics;
-using System.IO;
 
 namespace Popthatpill.ViewModels
 {
@@ -240,15 +237,12 @@ namespace Popthatpill.ViewModels
 
             await _dialogService.DisplayAlertAsync("Added Reminder", PillCount + " Pills of  the pill type " + PillName + " has been added to the " + Time + " Reminder" , "OK");
 
-            //Send information to reminder
-
             //re-Int the screen variables
             PillName = "";
             PillCount = 1;
             PillImage = null;
             Time = Timezero;
 
-           
         }
 
         //set what the NavigationCommnad will do

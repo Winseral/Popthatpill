@@ -2,11 +2,6 @@
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Xamarin.Forms;
 
 namespace Popthatpill.ViewModels
 {

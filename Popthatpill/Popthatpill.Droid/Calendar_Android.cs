@@ -37,8 +37,6 @@ namespace Popthatpill.Droid
                            Time.Minutes * 60 * 1000 +
                            Time.Seconds * 1000;
 
-            
-
             var epoch = (DateTime.Today - new DateTime(1970, 1, 1)).TotalMilliseconds;
 
             var correctBrisbantime = (epoch + msTime) - (10*60*60*1000);
@@ -46,8 +44,6 @@ namespace Popthatpill.Droid
             Console.WriteLine(correctBrisbantime);
 
 
-
-            //Intent intent = new Intent(Intent.ActionInsert);
             Intent intent = new Intent(Intent.ActionInsert, ContentUris.WithAppendedId(CalendarContract.Events.ContentUri, (long)PillId));
 
             intent.SetData(CalendarContract.Events.ContentUri);
@@ -55,9 +51,7 @@ namespace Popthatpill.Droid
             intent.PutExtra(CalendarContract.SyncColumns.AccountType, "LOCAL"); 
             intent.PutExtra(CalendarContract.EventsColumns.Exdate, correctBrisbantime);
             intent.PutExtra(CalendarContract.EventsColumns.HasExtendedProperties, 1);
-            //intent.PutExtra(CalendarContract.ExtraEventBeginTime, correctBrisbantime);
             intent.PutExtra(CalendarContract.EventsColumns.EventTimezone, "UTC");
-            //intent.PutExtra(CalendarContract.Events.InterfaceConsts.Dtstart, correctBrisbantime);
             intent.PutExtra(CalendarContract.EventsColumns.Rrule, "FREQ=WEEKLY;WKST=SU;BYDAY=" + day);
             intent.PutExtra(CalendarContract.EventsColumns.HasAlarm, 1);
             intent.PutExtra(CalendarContract.EventsColumns.Title, "Take your " + Title + "                            Take " + Count + " pill/s of the name " + PillName);
@@ -121,28 +115,8 @@ namespace Popthatpill.Droid
                 return day;
             }
             return "";
-            
-
+   
         }
-
-
-        /*public long GetDateTimeMS(int yr, int month, int day)
-        {
-            Calendar c = Calendar.GetInstance(Java.Util.TimeZone.Default);
-
-
-            c.Set(Calendar.DayOfMonth, 10);
-           // c.Set(Calendar.HourOfDay, hr);
-           // c.Set(Calendar.Minute, min);
-            c.Set(Calendar.Month, Calendar.September);
-            c.Set(Calendar.Year, 2016);
-
-       
-            return c.TimeInMillis;
-
-
-        }*/
-
        
     }
 

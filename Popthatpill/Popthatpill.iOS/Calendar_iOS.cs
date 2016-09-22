@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Popthatpill.iOS;
 using Xamarin.Forms;
 using EventKit;
-using EventKitUI;
 using Foundation;
 using UIKit;
 
